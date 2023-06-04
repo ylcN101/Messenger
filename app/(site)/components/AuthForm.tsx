@@ -1,10 +1,13 @@
 'use client'
+import axios from 'axios'
 import Button from '@/app/components/inputs/Button'
 import Input from '@/app/components/inputs/Input'
 import { useCallback, useState } from 'react'
 import { useForm, FieldValues, SubmitHandler } from 'react-hook-form'
 import { BsGithub, BsGoogle } from 'react-icons/bs'
 import AuthSocialButton from './AuthSocialButton'
+import { toast } from 'react-hot-toast'
+import { signIn } from 'next-auth/react'
 
 type Variant = 'LOGIN' | 'REGISTER'
 
@@ -28,20 +31,66 @@ const AuthForm = () => {
     defaultValues: { name: '', email: '', password: '' },
   })
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
+    if (!data) {
+      toast.error('Error creating account')
+      return
+    }
+
     if (variant === 'REGISTER') {
-      //axios register
+      try {
+        const response = await axios
+          .post('/api/register', data)
+          .catch(() => toast.error('Error creating account'))
+          .finally(() => setIsLoading(false))
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     if (variant === 'LOGIN') {
       //next auth signIn
+      try {
+        const response = await signIn('credentials', {
+          ...data,
+          redirect: false,
+        })
+        if (response?.error) {
+          toast.error(response.error)
+          return
+        }
+        if (response?.ok) {
+          toast.success('Logged in successfully')
+          return
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 
-  const socialActions = (action: string) => {
+  const socialActions = async (action: string) => {
     setIsLoading(true)
     //next social signIn
+    try {
+      const response = await signIn(action, { redirect: false })
+      if (response?.error) {
+        toast.error("Couldn't sign in with social media")
+        return
+      }
+      if (response?.ok) {
+        toast.success('Logged in successfully')
+        return
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
