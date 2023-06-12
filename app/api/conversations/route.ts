@@ -1,6 +1,7 @@
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import { NextResponse } from 'next/server'
 import prisma from '@/app/libs/prismadb'
+import { pusherServer } from '@/app/libs/pusher'
 
 export async function POST(request: Request) {
   try {
@@ -33,8 +34,15 @@ export async function POST(request: Request) {
         },
         include: { users: true },
       })
+
+      newConversation.users.forEach((user) => {
+        if (user.email) {
+          pusherServer.trigger(user.email, 'conversation:new', newConversation)
+        }
+      })
       return NextResponse.json(newConversation)
     }
+
     const existingConversations = await prisma.conversation.findMany({
       where: {
         OR: [
@@ -72,6 +80,11 @@ export async function POST(request: Request) {
       include: {
         users: true,
       },
+    })
+    newConversation.users.map((user) => {
+      if (user.email) {
+        pusherServer.trigger(user.email, 'conversation:new', newConversation)
+      }
     })
     return NextResponse.json(newConversation)
   } catch (error: any) {

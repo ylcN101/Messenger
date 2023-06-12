@@ -7,6 +7,8 @@ import { HiChevronLeft, HiEllipsisHorizontal } from 'react-icons/hi2'
 import Avatar from '@/app/components/Avatar'
 import ProfileDrawer from './ProfileDrawer'
 import AvatarGroup from '@/app/components/AvatarGroup'
+import useActiveList from '@/app/hooks/useActiveList'
+import { format } from 'date-fns'
 
 interface HeaderProps {
   conversation: Conversation & {
@@ -17,13 +19,18 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ conversation }) => {
   const otherUser = useOtherUsers(conversation)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const { members } = useActiveList()
+  const isActive = members.indexOf(otherUser?.email!) !== -1
+  const joinedDate = useMemo(() => {
+    return format(new Date(otherUser.createdAt), 'PP')
+  }, [otherUser.createdAt])
+
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
       return `${conversation.users.length} members`
     }
-
-    return 'Active'
-  }, [conversation])
+    return isActive ? 'Active' : `Last seen ${joinedDate}`
+  }, [conversation, isActive])
 
   return (
     <>
