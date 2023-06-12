@@ -13,7 +13,6 @@ interface UserBoxProps {
 const UserBox: React.FC<UserBoxProps> = ({ data }) => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-
   const handleClick = useCallback(() => {
     setIsLoading(true)
     axios
