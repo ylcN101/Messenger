@@ -1,5 +1,5 @@
 # Messenger App
-
+![image](https://res.cloudinary.com/dezqiqsqb/image/upload/v1686650908/Messenger4_ilvf2x.png)
 ## Description
 Messenger App is a real-time chat application built with Next.js, Tailwind CSS, TypeScript, Prisma, and MongoDB. It allows users to chat with each other in real-time.
 
@@ -10,10 +10,12 @@ Messenger App is a real-time chat application built with Next.js, Tailwind CSS, 
 - Message notifications
 
 ## Demo
-A live demo of the application is available at [Demo Link](https://your-demo-link.com).
+A live demo of the application is available at [Demo Link](https://messengerylcn.vercel.app/).
 
 ## Screenshots
-<!-- Add relevant screenshots of your application here -->
+![image](https://res.cloudinary.com/dezqiqsqb/image/upload/v1686650908/Messenger1_lmblbf.png)
+![image](https://res.cloudinary.com/dezqiqsqb/image/upload/v1686650908/Messenger2_mpgx3e.png)
+![image](https://res.cloudinary.com/dezqiqsqb/image/upload/v1686650908/Messenger5_ifukdm.png)
 
 ## Installation
 To run the Messenger App locally, follow these steps:
