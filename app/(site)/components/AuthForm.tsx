@@ -10,7 +10,6 @@ import { toast } from 'react-hot-toast'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import LoadingModal from '@/app/components/LoadingModal'
-
 type Variant = 'LOGIN' | 'REGISTER'
 
 const AuthForm = () => {
@@ -38,7 +37,7 @@ const AuthForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
-    defaultValues: { name: '', email: '', password: '' },
+    defaultValues: { name: '', email: 'test@test.com', password: '1234' },
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
